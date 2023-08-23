@@ -1,0 +1,40 @@
+version: '3.1'
+intents:
+- dish_name
+- eten
+- menu
+- tag_name
+- voorgerecht
+- hoofdgerecht
+entities:
+- tag
+- name
+slots:
+  dish_name:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: name
+  tag_names:
+    type: list
+    initial_value: []
+    mappings:
+    - type: from_entity
+      entity: tag
+responses:
+  utter_menu:
+  - text: Natuurlijk, hier is de menukaart.
+  - text: Alsjeblieft, hier is de menukaart. Neem rustig de tijd om je maaltijd te kiezen.
+  - text: Hier is de lijst met gerechten die we aanbieden.
+  utter_eten:
+  - text: Zeker, ik help u graag bij het maken van een keuze. Wilt u beginnen met een voorgerecht of direct naar het hoofdgerecht gaat?
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+actions:
+- action_check_tag
+- action_check_dish_menu
+- utter_menu
+- utter_eten
+- action_show_by_cat

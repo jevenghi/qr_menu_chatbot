@@ -1,0 +1,67 @@
+version: "3.1"
+
+stories:
+
+- story: check menu
+  steps:
+  - intent: dish_name
+    entities:
+    - name: kipburger
+  - slot_was_set:
+    - dish_name: kipburger
+  - action: action_check_dish_menu
+
+
+#- story: check tag
+#  steps:
+#  - intent: tag_name
+#    entities:
+#    - tag: vlees
+#  - slot_was_set:
+#    - tag_name: vlees
+#  - action: action_check_tag
+
+- story: check tag
+  steps:
+  - intent: tag_name
+    entities:
+    - tag: vlees
+    - tag: salad
+  - action: action_check_tag
+
+
+- story: interactive_story_1
+  steps:
+  - intent: dish_name
+    entities:
+    - name: rijstpap
+  - slot_was_set:
+    - dish_name: rijstpap
+  - action: action_check_dish_menu
+
+
+- story: interactive_story_1
+  steps:
+  - intent: tag_name
+    entities:
+    - tag: vlees
+  - slot_was_set:
+    - tag_names:
+      - vlees
+  - intent: tag_name
+    entities:
+    - tag: pizza
+    - tag: vlees
+  - action: action_check_tag
+
+- story: show by category
+  steps:
+  - intent: voorgerecht
+  - action: action_show_by_cat
+  - intent: hoofdgerecht
+  - action: action_show_by_cat
+  - intent: hot drinks
+  - action: action_show_by_cat
+
+
+

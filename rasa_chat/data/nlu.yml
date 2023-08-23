@@ -1,0 +1,154 @@
+version: "3.1"
+nlu:
+- intent: menu
+  examples: |
+    - Mag ik de menukaart bekijken?
+    - Graag de menu-opties en eventuele speciale aanbiedingen, alstublieft.
+    - Kan ik de volledige menukaart zien, inclusief drankjes?
+    - Zou ik de menu-opties en prijzen kunnen inzien voordat ik mijn bestelling plaats?
+    - Mag ik de menukaart raadplegen om mijn voorkeur te bepalen?
+    - Kan ik de lijst met gerechten zien?
+    - Kunt u mij de beschikbare gerechten laten zien?
+    - Is er een menukaart die ik kan inzien?
+    - Mag ik de menu-opties bekijken voordat ik mijn keuze maak?
+    - Heeft u een overzicht van de gerechten?
+    - Waar kan ik de menukaart vinden?
+    - Kunt u mij helpen met het kiezen van een gerecht van het menu?
+    - Mag ik de lijst met beschikbare gerechten bekijken?
+    - Kan ik de menu-opties en hun prijzen zien?
+    - Graag de menukaart om mijn bestelling te plaatsen.
+    - Zou ik de lijst met gerechten kunnen zien?
+    - Wat zijn de specialiteiten van het huis?
+    - Kan ik de menukaart bekijken voordat ik een keuze maak?
+    - Mag ik het menu zien voordat ik mijn bestelling plaats?
+    - Kan ik de beschikbare gerechten bekijken?
+    - Kan ik de menukaart raadplegen om mijn dieetvoorkeuren te controleren?
+    - Kunt u mij de menu-opties en aanbevelingen geven?
+    - Graag de menukaart om mijn maaltijd te kiezen.
+    - Heeft u een menu beschikbaar?
+    - Kunt u mij alstublieft een exemplaar van de menukaart geven?
+    - Kan ik de menu-opties zien?
+    - Mag ik weten wat er op het menu staat?
+    - Kunt u mij vertellen welke gerechten er beschikbaar zijn?
+    - Heeft u een lijst met gerechten die ik kan bekijken?
+    - Kan ik de menu-opties en prijzen zien?
+    - Graag de menukaart om mijn bestelling te kiezen.
+    - Zou ik alsjeblieft de menuopties kunnen bekijken?
+    - Kunt u mij laten zien welke gerechten er op het menu staan?
+    - mag een menukaart zien
+- intent: dish_name
+  examples: |
+    - Kunt u mij een stuk [carrot cake](name) bezorgen, alstublieft?
+    - Mag ik een bord [lasagne](name) opvragen?
+    - Kan ik alsjeblieft de [kipburger](name) bestellen?
+    - Graag een [margherita](name) pizza ontvangen, alstublieft.
+    - Hebben jullie pizza [hawaii](name)
+    - Kunt u voor mij een stuk [bosbessentaart](name) regelen?
+    - Ik wil graag een portie zoete [aardappel friet](name) bestellen, alstublieft.
+    - Mag ik een bord [pad thai](name) opvragen?
+    - Kan ik de [veggie wrap](name) bestellen?
+    - Ik zou graag een portie [groentesoep](name) willen hebben.
+    - Kunt u mij een stuk red [velvet cake](name) bezorgen, alstublieft?
+    - Ik wil graag een portie [dim sum](name) bestellen, als dat mogelijk is.
+    - Mag ik alstublieft een [schnitzel](name) bestellen?
+    - Kan ik de [tonijnsalade](name) opvragen?
+    - Ik wil graag een [Caprese salade](name) aanschaffen.
+    - Kunt u mij een plak [appeltaart](name) aanvragen?
+    - Ik zou graag een portie [springrolls](name) willen opvragen.
+    - Mag ik een bord [carbonara](name) bestellen?
+    - Hebben jullie [champignon burger](name)?
+    - Heb je [gazpacho](name) op menu?
+    - Kunt u voor mij een stuk [tiramisu](name) vinden?
+    - Ik wil graag een portie [hummus](name).
+    - Mag ik een bord [risotto](name) opvragen?
+    - Ik zou graag een portie [miso soep](name) willen hebben.
+    - Mag ik een stuk [lime pie](name) alstublieft?
+    - Kunt u voor mij een stuk [appel taart](name) regelen?
+    - Ik zou graag een kom [tomatensoep](name) willen hebben.
+    - hebben jullie [cheesecake](name)?
+    - ik heb een trek in stukje [hawaii pizza](name)
+    - hebben jullie [new york cheesecake](name)?
+    - hebben jullie [rijstpap](name)
+- intent: eten
+  examples: |
+    - Eten, dat wil ik
+    - Mijn maag knort, ik wil dineren
+    - Het is tijd om te smullen
+    - Ik verlang naar een maaltijd
+    - Een smakelijke maaltijd zou me goed doen
+    - Eetlust, daar verlang ik naar
+    - Ik kan wel wat voedsel gebruiken
+    - Een lekkere hap zou me opvrolijken
+    - Voedsel is waar ik naar verlang.
+    - Niets liever dan eten op dit moment.
+    - Laten we wat eten, alsjeblieft.
+    - Eten is precies wat ik nu nodig heb.
+    - Ik snak naar een smakelijke maaltijd.
+    - Het is etenstijd, laten we gaan!
+    - Mag ik alsjeblieft iets te eten hebben?
+    - Een maaltijd is waar ik naar verlang.
+    - Ik heb trek, ik wil eten.
+    - ik wil wat lekker hapje
+    - ik lust naar heerlijke diner
+    - Ik wil iets lekkers.
+    - Ik verlang naar iets smakelijks.
+    - Ik heb trek in iets lekkers.
+    - Het lijkt me heerlijk om iets lekkers te proeven.
+    - Ik kan wel wat lekkers gebruiken.
+    - Iets smaakvols, dat wil ik.
+    - Een lekkere traktatie zou me goed doen.
+    - Mag ik alsjeblieft iets lekkers hebben?
+    - Ik wil iets smaakvol.
+- intent: drink
+  examples: |
+    - Ik wil drinken.
+    - ik wil iets fris
+    - Ik heb dorst, ik wil drinken.
+    - Een verfrissend drankje
+    - Mijn keel is droog, ik wil drinken.
+    - Het is tijd om te drinken.
+    - Ik verlang naar een drankje
+    - Een koud glas drankje zou me goed doen.
+    - Ik kan wel iets te drinken gebruiken.
+    - Een drankje is waar ik naar verlang.
+    - Laten we iets slokken, alsjeblieft.
+    - Drinken is precies wat ik nu nodig heb.
+    - Ik snak naar een verfrissend drankje.
+    - Mag ik alsjeblieft iets te drinken hebben?
+    - ik moet een slok nemen
+- intent: tag_name
+  examples: |
+    - Ik wil iets met [vlees](tag)
+    - ik heb trek in [vis](tag)
+    - Wat soort [kipgerechten](tag) hebben jullie?
+    - Laat me alle [vleesgerechten](tag) zien
+    - bieden jullie [burgers](tag)?
+    - ik eet [vegetarisch](tag)
+    - welke [vegan](tag) opties zijn er?
+    - mag ik een [salade](tag) hebben?
+    - wat voor [koffies](tag) hebben jullie?
+    - laat me alle [thee](tag) opties zien
+    - ik wil iets lekkers met [kip](tag)
+    - welke [pizzas](tag) bieden u
+    - ik wil een bord [pasta](tag)
+    - hebben jullie [ossenhaas](name)
+    - ik wil [pizza](tag) met [vlees](tag)
+- intent: voorgerecht
+  examples: |
+    - Kan ik de lijst met voorgerechten bekijken?
+    - Welke voorgerechten beschikbaar zijn?
+    - voorgerechten graag
+    - Ik wil graag met iets kleins beginnen. Welke voorgerechten hebt u?
+    - Ik wil graag iets kleins.
+    - Mag ik starten met iets lichts
+    - Voor mij graag een klein gerechtje om mee te beginnen.
+    - Is het mogelijk om te starten met een kleine lekkernij?
+
+- intent: hoofdgerecht
+  examples: |
+    - Kan ik de lijst met hoofdgerechten bekijken?
+    - Welke hoofdgerechten beschikbaar zijn?
+    - hoofdgerechten graag
+    - Ik wil graag gelijk met groots beginnen
+    - Voor mij graag hoofdgerecht om mee te beginnen.
+    - Is het mogelijk om te starten met een hoofdgerecht?

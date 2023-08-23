@@ -1,0 +1,1 @@
+from .qr_controller import blp as QRBlueprint

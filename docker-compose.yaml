@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  back:
+    build:
+      context: ./back
+      target: DEV
+    ports:
+      - "5000:5000"
+
+    environment:
+      - ENV_NAME=DEV
+
+    env_file:
+      - .env
+    volumes:
+      - ./back:/app
+    networks:
+      - orange
+
+
+
+
+#  rasa_chat:
+#      build:
+#        context: ./rasa_chat
+#        target: DEV
+#      ports:
+#        - "5005:5005"
+#        - "5055:5055"
+#      volumes:
+#        - ./rasa_chat:/app
+#      networks:
+#        - orange
+
+
+
+networks:
+    orange:
+        driver: bridge

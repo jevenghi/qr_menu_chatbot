@@ -1,0 +1,1 @@
+from .category_controller import blp as CategoryBlueprint
