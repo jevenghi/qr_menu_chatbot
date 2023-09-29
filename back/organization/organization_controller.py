@@ -4,6 +4,7 @@ from flask_smorest import abort, Blueprint
 import jwt
 from flask import request, jsonify, g
 from marshmallow import ValidationError
+from ..location import PlainLocationSchema
 
 blp = Blueprint("organizations", __name__, description="Operations on organizations")
 
@@ -17,9 +18,26 @@ class Organization(MethodView):
 
     @blp.response(200, PlainOrganizationSchema(many=True))
     def get(self):
-        return OrganizationModel.query.all()
+        return OrganizationRepository.get_all_organizations()
 
 
+@blp.route("/organization/<string:organization_id>")
+class OrganizationGUD(MethodView):
+    @blp.response(200, PlainLocationSchema(many=True))
+    def get(self, organization_id):
+        organization_locations = OrganizationRepository.get_locations(organization_id)
+        return organization_locations
+
+
+    def delete(self, organization_id):
+        OrganizationRepository.delete_organization(organization_id)
+        return {'message': 'Organization deleted successfully'}
+
+    @blp.arguments(PlainOrganizationSchema)
+    @blp.response(200, PlainOrganizationSchema)
+    def put(self, organization_data, organization_id):
+        organization = OrganizationRepository.update_organization(organization_data, organization_id)
+        return organization
 
 
 @blp.errorhandler(ValidationError)

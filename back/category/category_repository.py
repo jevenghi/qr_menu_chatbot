@@ -31,7 +31,25 @@ class PlainCategorySchema(Schema):
     name = fields.Str(required=True)
     created_at = fields.Str(data_key='createdAt', attribute='created_at', dump_only=True)
 
+class CategorySchema(PlainCategorySchema):
+    pass
 class CategoryRepository:
     @staticmethod
     def create(data):
         return create_model(CategoryModel, data)
+
+    @staticmethod
+    def delete_category(category_id):
+        category = CategoryModel.query.get(category_id)
+        db.session.delete(category)
+        db.session.commit()
+
+    @staticmethod
+    def update_category(category_data, category_id):
+        category = CategoryModel.query.get(category_id)
+        category.name = category_data['name']
+
+        db.session.add(category)
+        db.session.commit()
+
+        return category

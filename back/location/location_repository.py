@@ -32,3 +32,22 @@ class LocationRepository:
     @staticmethod
     def create(data):
         return create_model(LocationModel, data)
+
+    @staticmethod
+    def delete_location(location_id):
+        location = LocationModel.query.get(location_id)
+        db.session.delete(location)
+        db.session.commit()
+
+
+    @staticmethod
+    def update_location(location_data, location_id):
+        location = LocationModel.query.get(location_id)
+        location.name = location_data['name']
+        location.organization_id = location_data['organization_id']
+        db.session.add(location)
+        db.session.commit()
+        return location
+
+
+

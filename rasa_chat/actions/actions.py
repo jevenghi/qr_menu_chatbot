@@ -1,12 +1,3 @@
-# This files contains your custom actions which can be used to run
-# custom Python code.
-#
-# See this guide on how to implement these action:
-# https://rasa.com/docs/rasa/custom-actions
-
-
-# This is a simple example for a custom action which utters "Hello World!"
-
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -28,7 +19,8 @@ class ActionCheckDishMenu(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         # dish_name = next(tracker.get_latest_entity_values("dish_name"))
         chat_id = tracker.sender_id
-
+        location_id = tracker.latest_message['entities'][0]['value']
+        # backend_url = f"http://localhost:5000/location/{location_id}"
         backend_url = f"http://localhost:5000/chat/{chat_id}"
         menu = requests.get(backend_url).json()
         dish_name = tracker.get_slot("dish_name")

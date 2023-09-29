@@ -28,6 +28,16 @@ class LocationItems(MethodView):
         location_items = ItemModel.query.filter(ItemModel.location_id == location_id)
         return location_items
 
+    def delete(self, location_id):
+        LocationRepository.delete_location(location_id)
+        return {'message': 'Location deleted successfully'}
+
+    @blp.arguments(PlainLocationSchema)
+    @blp.response(200, PlainLocationSchema)
+    def put(self, location_data, location_id):
+        location = LocationRepository.update_location(location_data, location_id)
+        return location
+
 
 
 

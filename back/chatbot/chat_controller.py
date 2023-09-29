@@ -13,8 +13,6 @@ from sqlalchemy.orm import joinedload
 
 
 blp = Blueprint("chats", __name__, description="Operations on chats")
-from ..db import db
-
 
 @blp.route("/chat")
 class WelcomeChatbot(MethodView):
@@ -39,14 +37,15 @@ class Chat(MethodView):
     @blp.response(200, ChatbotSchema)
     def post(self, chat_id):
         chat = ChatbotModel.query.get(chat_id)
-        # location_id = chat.location_id
+        location_id = chat.location_id
         # location_items = ItemModel.query.filter(ItemModel.location_id == location_id)
         # menu = [item.name for item in location_items]
 
         user_input = request.json["user_input"]
         rasa_webhook_url = "http://192.168.2.6:5005/webhooks/rest/webhook"
         # rasa_webhook_url = "http://rasa_chat:5005/webhooks/rest/webhook"
-        rasa_response = requests.post(rasa_webhook_url, json={"sender": chat.id, "message": user_input})
+        rasa_response = requests.post(rasa_webhook_url, json={"sender": chat.id, "message": user_input,
+                                                              "location_id": location_id})
 
         # Extract the Rasa response and generate the appropriate response
         rasa_response_data = rasa_response.json()

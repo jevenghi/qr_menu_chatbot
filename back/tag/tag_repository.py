@@ -41,6 +41,30 @@ class TagRepository:
     def create(data):
         return create_model(TagModel, data)
 
+    @staticmethod
+    def get_all_tags():
+        tags = TagModel.query.all()
+        return tags
+
+    @staticmethod
+    def get_tag(tag_id):
+        tag_info = TagModel.query.get(tag_id)
+        return tag_info
+
+    @staticmethod
+    def update_tag(tag_data, tag_id):
+        tag = TagModel.query.get(tag_id)
+        tag.name = tag_data['name']
+        db.session.add(tag)
+        db.session.commit()
+        return tag
+
+    @staticmethod
+    def delete_tag(tag_id):
+        tag = TagModel.query.get(tag_id)
+        db.session.delete(tag)
+        db.session.commit()
+
 
 
 
