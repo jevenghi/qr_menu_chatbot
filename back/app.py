@@ -9,12 +9,12 @@ from .location import LocationBlueprint, LocationModel
 from .item import ItemBlueprint, ItemModel
 from .qrs import QRBlueprint
 from .traindata import IntentsBlueprint, PatternBlueprint, PatternModel
-from .utils import create_model
 from .traindata import ResponseModel, ResponseBlueprint
-from .traindata import greetings_responses, menu_responses, bestellen_responses
 from .tag import TagBlueprint, TagModel, ItemTags
 from .category import CategoryBlueprint
 from .chatbot import ChatBlueprint
+from flask_jwt_extended import JWTManager
+
 import yaml
 def create_app():
     app = Flask(__name__)
@@ -23,7 +23,7 @@ def create_app():
     app_config(app)
 
     db.init_app(app)
-    migrate = Migrate(app, db, table='QRmenu/back/migrations')
+    migrate = Migrate(app, db, table='MENUrasa/back/migrations')
 
     api = Api(app)
 
@@ -37,8 +37,7 @@ def create_app():
     api.register_blueprint(TagBlueprint)
     api.register_blueprint(ChatBlueprint)
     api.register_blueprint(CategoryBlueprint)
-
-
+    jwt = JWTManager(app)
 
     return app
 # app = create_app()
