@@ -21,23 +21,22 @@ class Role(MethodView):
         return RoleRepository.get_all_roles()
 
 
-@blp.route("/organization/<string:organization_id>")
-class OrganizationGUD(MethodView):
-    @blp.response(200, PlainLocationSchema(many=True))
-    def get(self, organization_id):
-        organization_locations = OrganizationRepository.get_locations(organization_id)
-        return organization_locations
+@blp.route("/role/<integer:role_id>")
+class RoleGUD(MethodView):
+    @blp.response(200, PlainRoleSchema)
+    def get(self, role_id):
+        role = RoleRepository.get_role(role_id)
+        return role
 
+    def delete(self, role_id):
+        RoleRepository.delete_role(role_id)
+        return {'message': 'Role deleted successfully'}
 
-    def delete(self, organization_id):
-        OrganizationRepository.delete_organization(organization_id)
-        return {'message': 'Organization deleted successfully'}
-
-    @blp.arguments(PlainOrganizationSchema)
-    @blp.response(200, PlainOrganizationSchema)
-    def put(self, organization_data, organization_id):
-        organization = OrganizationRepository.update_organization(organization_data, organization_id)
-        return organization
+    @blp.arguments(PlainRoleSchema)
+    @blp.response(200, PlainRoleSchema)
+    def put(self, role_data, role_id):
+        role = RoleRepository.update_role(role_data, role_id)
+        return role
 
 
 @blp.errorhandler(ValidationError)

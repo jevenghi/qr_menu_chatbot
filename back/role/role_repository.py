@@ -19,21 +19,22 @@ class RoleRepository:
         return create_model(RoleModel, data)
 
     @staticmethod
-    def get_locations(organization_id):
-        organization_locations = LocationModel.query.filter(LocationModel.organization_id == organization_id)
-        return organization_locations
+    def get_role(role_id):
+        role = RoleModel.query.get_or_404(role_id)
+        return role
+
     @staticmethod
-    def delete_organization(organization_id):
-        organization = OrganizationModel.query.get(organization_id)
-        db.session.delete(organization)
+    def delete_role(role_id):
+        role = RoleModel.query.get(role_id)
+        db.session.delete(role)
         db.commit()
     @staticmethod
-    def update_organization(organization_data, organization_id):
-        organization = OrganizationModel.query.get(organization_id)
-        organization.name = organization_data['name']
-        db.session.add(organization)
+    def update_role(role_data, role_id):
+        role = RoleModel.query.get(role_id)
+        role.name = role_data['name']
+        db.session.add(role)
         db.session.commit()
-        return organization
+        return role
 
     @staticmethod
     def get_all_roles():
