@@ -1,7 +1,13 @@
 from marshmallow import Schema, fields
-from db import db
+from ..db import db
 from flask_smorest import abort
 from passlib.hash import pbkdf2_sha256
+from flask_jwt_extended import create_access_token, get_jwt, create_refresh_token, get_jwt_identity
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
+from datetime import datetime
+from datetime import timezone
+
 class UserModel(db.Model):
     __tablename__ = "users"
 
@@ -9,13 +15,21 @@ class UserModel(db.Model):
     email = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
-    roles = db.relationship('RoleModel', secondary='user_roles')
+
+class TokenBlocklist(db.Model):
+    __tablename__ = "tokens_blocklist"
+
+    id = db.Column(db.Integer, primary_key=True)
+    jti = db.Column(db.String(36), nullable=False, index=True)
+    created_at = db.Column(db.DateTime, nullable=False)
 
 
 class PlainUserSchema(Schema):
     id = fields.Int(dump_only=True)
     email = fields.Str(required=True)
     password = fields.Str(required=True, load_only=True)
+
+
 
 
 class UserRepository:
@@ -34,17 +48,48 @@ class UserRepository:
         return {"message": "User created successfully."}, 201
 
     @staticmethod
-    def show(user_id):
+    def user_login(user_data):
+        user = UserModel.query.filter(
+            UserModel.email == user_data["email"]
+        ).first()
+
+        if user and pbkdf2_sha256.verify(user_data["password"], user.password):
+            access_token = create_access_token(identity=user.id, fresh=True)
+            refresh_token = create_refresh_token(user.id)
+            return {"access_token": access_token, "refresh_token": refresh_token}, 200
+
+        abort(401, message="Invalid credentials.")
+
+    @staticmethod
+    def get_user(user_id):
         user = UserModel.query.get_or_404(user_id)
         return user
 
     @staticmethod
-    def delete(user_id):
+    def delete_user(user_id):
         user = UserModel.query.get_or_404(user_id)
         db.session.delete(user)
         db.session.commit()
         return {"message": "User deleted."}, 200
 
     @staticmethod
-    def show_all():
+    def show_all_users():
         return UserModel.query.all()
+
+
+    @staticmethod
+    def logout():
+        jti = get_jwt()["jti"]
+        now = datetime.now(timezone.utc)
+        db.session.add(TokenBlocklist(jti=jti, created_at=now))
+
+        refresh_token_jti = get_jwt()["refresh_token"]["jti"]
+        db.session.add(TokenBlocklist(jti=refresh_token_jti, created_at=now))
+
+        db.session.commit()
+        return {"message": "JWT revoked"}
+    @staticmethod
+    def refresh_token():
+        current_user = get_jwt_identity()
+        new_token = create_access_token(identity=current_user, fresh=False)
+        return {"access_token": new_token}, 200

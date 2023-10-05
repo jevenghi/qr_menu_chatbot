@@ -13,6 +13,7 @@ from .traindata import ResponseModel, ResponseBlueprint
 from .tag import TagBlueprint, TagModel, ItemTags
 from .category import CategoryBlueprint
 from .chatbot import ChatBlueprint
+from .user import UserBlueprint, TokenBlocklist
 from flask_jwt_extended import JWTManager
 
 import yaml
@@ -37,7 +38,21 @@ def create_app():
     api.register_blueprint(TagBlueprint)
     api.register_blueprint(ChatBlueprint)
     api.register_blueprint(CategoryBlueprint)
+    api.register_blueprint(UserBlueprint)
+
     jwt = JWTManager(app)
+
+    @jwt.additional_claims_loader
+    def add_claims_to_jwt(identity):
+        if identity == 1:
+            return {"is_admin": True}
+        return {"is_admin": False}
+
+    @jwt.token_in_blocklist_loader
+    def check_if_token_is_revoked(jwt_header, jwt_payload: dict):
+        jti = jwt_payload["jti"]
+        token = db.session.query(TokenBlocklist.id).filter_by(jti=jti).scalar()
+        return token is not None
 
     return app
 # app = create_app()
