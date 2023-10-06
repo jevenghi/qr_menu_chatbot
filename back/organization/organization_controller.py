@@ -17,7 +17,7 @@ class Organization(MethodView):
         organization = OrganizationRepository.create(organization_data)
         return organization
 
-    @jwt_required(fresh=True)
+    @jwt_required()
     @blp.response(200, PlainOrganizationSchema(many=True))
     def get(self):
         jwt = get_jwt()

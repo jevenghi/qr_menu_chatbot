@@ -1,6 +1,6 @@
 from flask_smorest import abort, Blueprint
 from flask.views import MethodView
-from .user_repository import UserRepository, PlainUserSchema
+from .user_repository import UserRepository, PlainUserSchema, ChangePasswordSchema
 from flask_jwt_extended import jwt_required, get_jwt
 from flask import request, jsonify
 
@@ -62,6 +62,14 @@ class User(MethodView):
         user = UserRepository.delete_user(user_id)
         return user
 
+
+@blp.route("/user/<int:user_id>/password")
+class User(MethodView):
+    @jwt_required(fresh=True)
+    @blp.arguments(ChangePasswordSchema)
+    def post(self, user_data, user_id):
+        new_password = UserRepository.change_password(user_data, user_id)
+        return new_password
 
 @blp.route("/user")
 class UsersList(MethodView):

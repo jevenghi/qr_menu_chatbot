@@ -29,6 +29,12 @@ class PlainUserSchema(Schema):
     email = fields.Str(required=True)
     password = fields.Str(required=True, load_only=True)
 
+class ChangePasswordSchema(Schema):
+    old_password = fields.Str(required=True, load_only=True)
+    new_password = fields.Str(required=True, load_only=True)
+    confirm_new_password = fields.Str(required=True, load_only=True)
+
+
 
 
 
@@ -93,3 +99,14 @@ class UserRepository:
         current_user = get_jwt_identity()
         new_token = create_access_token(identity=current_user, fresh=False)
         return {"access_token": new_token}, 200
+
+    @staticmethod
+    def change_password(user_data, user_id):
+        user = UserModel.query.get(user_id)
+        if not pbkdf2_sha256.verify(user_data["old_password"], user.password):
+            return {"message": "Wrong password"}
+        if user_data["new_password"] != user_data["confirm_new_password"]:
+            return {"message": "Passwords don't match"}
+        user.password = pbkdf2_sha256.hash(user_data["new_password"])
+        db.session.commit()
+        return {"message": "Password changed"}
