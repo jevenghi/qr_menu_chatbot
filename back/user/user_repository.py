@@ -3,10 +3,9 @@ from ..db import db
 from flask_smorest import abort
 from passlib.hash import pbkdf2_sha256
 from flask_jwt_extended import create_access_token, get_jwt, create_refresh_token, get_jwt_identity
-from sqlalchemy.dialects.postgresql import UUID
-import uuid
 from datetime import datetime
 from datetime import timezone
+
 
 class UserModel(db.Model):
     __tablename__ = "users"
@@ -14,6 +13,7 @@ class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
+    organizations = db.relationship("OrganizationModel", back_populates="user")
 
 
 class TokenBlocklist(db.Model):
@@ -29,13 +29,11 @@ class PlainUserSchema(Schema):
     email = fields.Str(required=True)
     password = fields.Str(required=True, load_only=True)
 
+
 class ChangePasswordSchema(Schema):
     old_password = fields.Str(required=True, load_only=True)
     new_password = fields.Str(required=True, load_only=True)
     confirm_new_password = fields.Str(required=True, load_only=True)
-
-
-
 
 
 class UserRepository:
@@ -54,7 +52,7 @@ class UserRepository:
         return {"message": "User created successfully."}, 201
 
     @staticmethod
-    def user_login(user_data):
+    def login(user_data):
         user = UserModel.query.filter(
             UserModel.email == user_data["email"]
         ).first()
@@ -82,7 +80,6 @@ class UserRepository:
     def show_all_users():
         return UserModel.query.all()
 
-
     @staticmethod
     def logout():
         jti = get_jwt()["jti"]
@@ -94,6 +91,7 @@ class UserRepository:
 
         db.session.commit()
         return {"message": "JWT revoked"}
+
     @staticmethod
     def refresh_token():
         current_user = get_jwt_identity()

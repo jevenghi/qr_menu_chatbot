@@ -8,6 +8,7 @@ from flask_jwt_extended import jwt_required, get_jwt
 
 blp = Blueprint("organizations", __name__, description="Operations on organizations")
 
+
 @blp.route("/organization")
 class Organization(MethodView):
     @jwt_required()
@@ -26,6 +27,17 @@ class Organization(MethodView):
         return OrganizationRepository.get_all_organizations()
 
 
+@blp.route("/organization/<int:user_id>")
+class UserOrganizations(MethodView):
+    #@jwt_required()
+    @blp.response(200, PlainOrganizationSchema(many=True))
+    def get(self, user_id):
+        organizations = OrganizationRepository.all_organizations(user_id)
+        return organizations
+
+
+
+
 @blp.route("/organization/<string:organization_id>")
 class OrganizationGUD(MethodView):
     @jwt_required()
@@ -38,6 +50,7 @@ class OrganizationGUD(MethodView):
     def delete(self, organization_id):
         OrganizationRepository.delete_organization(organization_id)
         return {'message': 'Organization deleted successfully'}
+
     @jwt_required()
     @blp.arguments(PlainOrganizationSchema)
     @blp.response(200, PlainOrganizationSchema)
@@ -56,6 +69,7 @@ def handle_validation_error(error):
     })
     response.status_code = 422
     return response
+
 
 @blp.errorhandler(Exception)
 def handle_exception(error):

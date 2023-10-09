@@ -9,13 +9,17 @@ class OrganizationModel(db.Model):
     id = db.Column(db.String, primary_key=True, default=lambda: str(uuid.uuid4().hex))
     name = db.Column(db.String(120), unique=True, nullable=False)
     created_at = db.Column("createdAt", db.DateTime, default=datetime.now)
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     location = db.relationship("LocationModel", back_populates="organization")
     qrs = db.relationship("QRModel", back_populates="organization")
+    user = db.relationship("UserModel", back_populates="organizations")
+
 
 
 class PlainOrganizationSchema(Schema):
     id = fields.Str(dump_only=True)
     name = fields.Str(required=True)
+    owner_id = fields.Int(dump_only=True)
     created_at = fields.Str(data_key='createdAt', attribute='created_at', dump_only=True)
 
 
@@ -50,3 +54,7 @@ class OrganizationRepository:
         return all_organizations
 
 
+    @staticmethod
+    def all_organizations(user_id):
+        all_organizations = OrganizationModel.query.filter(OrganizationModel.owner_id == user_id)
+        return all_organizations
