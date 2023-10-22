@@ -164,4 +164,4 @@ cython_debug/
 *.pyc
 *.pyo
 *.tmp
-
+.rasa/cache
