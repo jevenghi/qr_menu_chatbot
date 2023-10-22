@@ -1,1 +1,2 @@
 from .organization_controller import blp as OrganizationBlueprint
+from .organization_repository import OrganizationSchema

@@ -9,7 +9,7 @@ blp = Blueprint("items", __name__, description="Operations on items")
 
 @blp.route("/item")
 class Item(MethodView):
-    @jwt_required
+    #@jwt_required
     @blp.arguments(PlainItemSchema)
     @blp.response(201, PlainItemSchema)
     def post(self, item_data):
@@ -22,13 +22,13 @@ class Item(MethodView):
 
 @blp.route("/item/<string:item_id>/tag/<int:tag_id>")
 class ItemTag(MethodView):
-    @jwt_required
+    #@jwt_required
     @blp.response(200, TagAndItemSchema)
     def delete(self, item_id, tag_id):
         deleted_tag = ItemRepository.delete_tag(item_id, tag_id)
         return deleted_tag
 
-    @jwt_required
+    #@jwt_required
     @blp.response(200, TagAndItemSchema)
     def post(self, item_id, tag_id):
         added_tag = ItemRepository.add_tag(item_id, tag_id)
@@ -51,7 +51,7 @@ class ItemCrud(MethodView):
         item = ItemRepository.update_item(item_data, item_id)
         return item
 
-    @jwt_required
+    #@jwt_required
     def delete(self, item_id):
         ItemRepository.delete_item(item_id)
         return {'message': 'Item deleted successfully'}

@@ -99,7 +99,7 @@ nlu:
     - Een lekkere traktatie zou me goed doen.
     - Mag ik alsjeblieft iets lekkers hebben?
     - Ik wil iets smaakvol.
-- intent: drink
+- intent: koude dranken
   examples: |
     - Ik wil drinken.
     - ik wil iets fris
@@ -152,3 +152,10 @@ nlu:
     - Ik wil graag gelijk met groots beginnen
     - Voor mij graag hoofdgerecht om mee te beginnen.
     - Is het mogelijk om te starten met een hoofdgerecht?
+
+- intent: warme dranken
+  examples: |
+    - Kan ik de lijst met warme dranken bekijken?
+    - Welke warme dranken beschikbaar zijn?
+    - Warme dranken graag
+    - Voor mij graag warme drankje om mee te beginnen.

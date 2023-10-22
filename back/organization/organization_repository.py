@@ -2,15 +2,18 @@ from ..common_imports import *
 from ..location import PlainLocationSchema, LocationModel
 from ..db import db
 from ..utils import create_model
+from flask_smorest import abort
+from sqlalchemy.exc import SQLAlchemyError
 
 class OrganizationModel(db.Model):
+
     __tablename__ = "organizations"
 
     id = db.Column(db.String, primary_key=True, default=lambda: str(uuid.uuid4().hex))
     name = db.Column(db.String(120), unique=True, nullable=False)
     created_at = db.Column("createdAt", db.DateTime, default=datetime.now)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    location = db.relationship("LocationModel", back_populates="organization")
+    location = db.relationship("LocationModel", back_populates="organization", cascade="all, delete")
     qrs = db.relationship("QRModel", back_populates="organization")
     user = db.relationship("UserModel", back_populates="organizations")
 
@@ -24,12 +27,21 @@ class PlainOrganizationSchema(Schema):
 
 
 class OrganizationSchema(PlainOrganizationSchema):
-    locations = fields.List(fields.Nested(PlainLocationSchema()), dump_only=True)
+    location = fields.List(fields.Nested(PlainLocationSchema()), dump_only=True)
 
 class OrganizationRepository:
     @staticmethod
-    def create(data):
-        return create_model(OrganizationModel, data)
+    def create(data, user_id):
+        organization = OrganizationModel(**data, owner_id=user_id)
+        try:
+            db.session.add(organization)
+            db.session.commit()
+        except SQLAlchemyError as e:
+            abort(
+                500,
+                message=str(e),
+            )
+        return organization
 
     @staticmethod
     def get_locations(organization_id):

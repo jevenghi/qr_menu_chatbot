@@ -41,12 +41,13 @@ class TokenRefresh(MethodView):
 @blp.route("/user/<int:user_id>")
 class User(MethodView):
 
-
+    @jwt_required()
     @blp.response(200, PlainUserSchema)
     def get(self, user_id):
         user = UserRepository.get_user(user_id)
         return user
 
+    @jwt_required()
     def delete(self, user_id):
         user = UserRepository.delete_user(user_id)
         return user

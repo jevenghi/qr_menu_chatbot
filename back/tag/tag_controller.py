@@ -10,14 +10,14 @@ blp = Blueprint("tags", __name__, description="Operations on tags")
 @blp.route("/tag")
 class Tag(MethodView):
 
-    @jwt_required()
+    #@jwt_required()
     @blp.arguments(PlainTagSchema)
-    @blp.response(200, PlainTagSchema)
+    @blp.response(201, PlainTagSchema)
     def post(self, tag_data):
         tag = TagRepository.create(tag_data)
         return tag
 
-    @jwt_required()
+    #@jwt_required()
     @blp.response(200, PlainTagSchema(many=True))
     def get(self):
         return TagRepository.get_all_tags()

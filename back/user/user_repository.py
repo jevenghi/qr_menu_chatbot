@@ -5,7 +5,7 @@ from passlib.hash import pbkdf2_sha256
 from flask_jwt_extended import create_access_token, get_jwt, create_refresh_token, get_jwt_identity
 from datetime import datetime
 from datetime import timezone
-
+from ..organization import OrganizationSchema
 
 class UserModel(db.Model):
     __tablename__ = "users"
@@ -28,6 +28,7 @@ class PlainUserSchema(Schema):
     id = fields.Int(dump_only=True)
     email = fields.Str(required=True)
     password = fields.Str(required=True, load_only=True)
+    organizations = fields.List(fields.Nested(OrganizationSchema()), dump_only=True)
 
 
 class ChangePasswordSchema(Schema):

@@ -1,5 +1,5 @@
 from flask.views import MethodView
-from .organization_repository import OrganizationRepository, PlainOrganizationSchema, OrganizationModel
+from .organization_repository import OrganizationRepository, PlainOrganizationSchema, OrganizationSchema
 from flask_smorest import abort, Blueprint
 from flask import request, jsonify, g
 from marshmallow import ValidationError
@@ -19,7 +19,7 @@ class Organization(MethodView):
         return organization
 
     @jwt_required()
-    @blp.response(200, PlainOrganizationSchema(many=True))
+    @blp.response(200, OrganizationSchema(many=True))
     def get(self):
         jwt = get_jwt()
         if not jwt.get("is_admin"):
@@ -29,12 +29,17 @@ class Organization(MethodView):
 
 @blp.route("/organization/<int:user_id>")
 class UserOrganizations(MethodView):
-    #@jwt_required()
+    @jwt_required()
     @blp.response(200, PlainOrganizationSchema(many=True))
     def get(self, user_id):
         organizations = OrganizationRepository.all_organizations(user_id)
         return organizations
 
+    @blp.arguments(PlainOrganizationSchema)
+    @blp.response(200, PlainOrganizationSchema)
+    def post(self, organization_data, user_id):
+        organization = OrganizationRepository.create(organization_data, user_id)
+        return organization
 
 
 

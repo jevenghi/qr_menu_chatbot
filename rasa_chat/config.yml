@@ -16,8 +16,8 @@ pipeline:
 # # See https://rasa.com/docs/rasa/tuning-your-model for more information.
 - name: WhitespaceTokenizer
 - name: RegexFeaturizer
+  "case_sensitive": False
 - name: LexicalSyntacticFeaturizer
-- name: CountVectorsFeaturizer
 - name: CountVectorsFeaturizer
   analyzer: char_wb
   min_ngram: 1

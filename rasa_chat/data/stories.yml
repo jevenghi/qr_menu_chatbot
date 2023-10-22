@@ -12,15 +12,6 @@ stories:
   - action: action_check_dish_menu
 
 
-#- story: check tag
-#  steps:
-#  - intent: tag_name
-#    entities:
-#    - tag: vlees
-#  - slot_was_set:
-#    - tag_name: vlees
-#  - action: action_check_tag
-
 - story: check tag
   steps:
   - intent: tag_name
@@ -40,19 +31,19 @@ stories:
   - action: action_check_dish_menu
 
 
-- story: interactive_story_1
-  steps:
-  - intent: tag_name
-    entities:
-    - tag: vlees
-  - slot_was_set:
-    - tag_names:
-      - vlees
-  - intent: tag_name
-    entities:
-    - tag: pizza
-    - tag: vlees
-  - action: action_check_tag
+#- story: interactive_story_1
+#  steps:
+#  - intent: tag_name
+#    entities:
+#    - tag: vlees
+#  - slot_was_set:
+#    - tag_names:
+#      - vlees
+#  - intent: tag_name
+#    entities:
+#    - tag: pizza
+#    - tag: vlees
+#  - action: action_check_tag
 
 - story: show by category
   steps:
@@ -60,8 +51,11 @@ stories:
   - action: action_show_by_cat
   - intent: hoofdgerecht
   - action: action_show_by_cat
-  - intent: hot drinks
+  - intent: warme dranken
   - action: action_show_by_cat
+  - intent: koude dranken
+  - action: action_show_by_cat
+
 
 
 

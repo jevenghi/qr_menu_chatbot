@@ -83,7 +83,6 @@ class Tags(MethodView):
         location_id = chat.location_id
         tags_raw = request.get_json()["tags"]
 
-
         return ChatbotRepository.tags(tags_raw, location_id)
 
 @blp.route("/chat/<string:chat_id>/category")
@@ -92,6 +91,5 @@ class Tags(MethodView):
         chat = ChatbotModel.query.get(chat_id)
         location_id = chat.location_id
         category = request.get_json()["category"]
-
 
         return ChatbotRepository.get_cat(category, location_id)

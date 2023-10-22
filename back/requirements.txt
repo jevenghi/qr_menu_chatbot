@@ -16,3 +16,4 @@ qrcode
 fuzzywuzzy
 python-Levenshtein
 pyyaml
+gunicorn

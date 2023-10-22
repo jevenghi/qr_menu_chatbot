@@ -3,6 +3,7 @@ from .location_repository import LocationModel, PlainLocationSchema
 from flask_smorest import abort, Blueprint
 from .location_repository import LocationRepository
 from ..item import PlainItemSchema, ItemModel
+from ..tag import PlainTagSchema
 from flask_jwt_extended import jwt_required, get_jwt
 
 
@@ -13,7 +14,7 @@ blp = Blueprint("locations", __name__, description="Operations on locations")
 class Location(MethodView):
     @jwt_required
     @blp.arguments(PlainLocationSchema)
-    @blp.response(200, PlainLocationSchema)
+    @blp.response(201, PlainLocationSchema)
     def post(self, location_data):
         location = LocationRepository.create(location_data)
         return location
@@ -28,11 +29,11 @@ class Location(MethodView):
 
 
 @blp.route("/location/<string:location_id>")
-class LocationItems(MethodView):
-    @blp.response(200, PlainItemSchema(many=True))
+class LocationGUD(MethodView):
+    @blp.response(200, PlainLocationSchema)
     def get(self, location_id):
-        location_items = ItemModel.query.filter(ItemModel.location_id == location_id)
-        return location_items
+        location = LocationRepository.get_info(location_id)
+        return location
 
     @jwt_required
     def delete(self, location_id):
@@ -47,5 +48,18 @@ class LocationItems(MethodView):
         return location
 
 
+@blp.route("/location/<string:location_id>/items")
+class LocationItems(MethodView):
+    @blp.response(200, PlainItemSchema(many=True))
+    def get(self, location_id):
+        # location_items = ItemModel.query.filter(ItemModel.location_id == location_id)
+        location_items = LocationRepository.all_items(location_id)
+        return location_items
 
 
+@blp.route("/location/<string:location_id>/tags")
+class LocationTags(MethodView):
+    @blp.response(200, PlainTagSchema(many=True))
+    def get(self, location_id):
+        location_tags = LocationRepository.all_tags(location_id)
+        return location_tags

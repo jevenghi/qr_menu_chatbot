@@ -6,6 +6,8 @@ intents:
 - tag_name
 - voorgerecht
 - hoofdgerecht
+- warme dranken
+- koude dranken
 entities:
 - tag
 - name
